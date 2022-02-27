@@ -11,7 +11,8 @@ import SwiftUI
 struct SwiftButtonsApp: App {
     var body: some Scene {
         WindowGroup {
-            HomeScene()
+            // HomeScene()
+            ButtonDemo()
         }
     }
 }

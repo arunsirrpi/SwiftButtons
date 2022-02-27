@@ -16,14 +16,26 @@ struct HomeScene: View {
             VStack(spacing: 44) {
                 ButtonsListHeader()
                 SimpleTextButton()
-                DLSButton(text: "Flat")
+                ButtonBase(text: "Flat")
                     .frame(width: 100, height: 44)
                     .applyFlatStyle()
-                    .contentShape(Rectangle())
-                DLSButton(text: "Filled")
+                ButtonBase(text: "Filled")
                     .applyFilledStyle()
-                    .contentShape(Rectangle())
                     .frame(width: 100, height: 44)
+                DeleteButton()
+                InfoButton()
+                ButtonBase(text: "Prominetnt Bordered")
+                    .frame(width: 100, height: 44)
+                    .buttonStyle(.borderedProminent)
+                ButtonBase(text: "bordered")
+                    .frame(width: 100, height: 44)
+                    .buttonStyle(.bordered)
+                ButtonBase(text: "bordered-less")
+                    .frame(width: 100, height: 44)
+                    .buttonStyle(.borderless)
+                ButtonBase(text: "DLS-Style Fill")
+                    .frame(width: 100, height: 44)
+                    .buttonStyle(FillButtonStyle())
             }
         }
     }
@@ -82,7 +94,25 @@ struct SimpleTextButton: View {
     }
 }
 
-struct DLSButton: View {
+/// Button With a role
+struct DeleteButton: View {
+    var body: some View {
+        Button(role: .destructive) {} label: {
+            Label("Delete", systemImage: "trash.square.fill")
+        }
+    }
+}
+
+struct InfoButton: View {
+    var body: some View {
+        Button(role: .cancel) {} label: {
+            Label("Info", systemImage: "thermometer.sun.fill")
+        }
+    }
+}
+
+/// ButtonBase
+struct ButtonBase: View {
     @State
     private var isPresented = false
     let text: String
@@ -94,9 +124,7 @@ struct DLSButton: View {
         GeometryReader { geometry in
             Button(action: buttonAction) {
                 Text(text)
-                    .frame(
-                        width: geometry.size.width,
-                        height: geometry.size.height)
+                    .frame(width: geometry.size.width, height: geometry.size.height)
             }
         }
         .alert("\(text) - DLS Button", isPresented: $isPresented) {}
@@ -113,6 +141,18 @@ struct FilledButton: ViewModifier {
             .background(Color(hex: 0xFDC605))
             .foregroundColor(Color(hex: 0x000000))
             .cornerRadius(4)
+    }
+}
+
+struct FillButtonStyle: PrimitiveButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        GeometryReader { geometry in
+            Button(configuration)
+                .frame(width: geometry.size.width, height: geometry.size.height)
+                .background(Color(hex: 0xFDC605))
+                .foregroundColor(Color(hex: 0x000000))
+                .cornerRadius(4)
+        }
     }
 }
 
